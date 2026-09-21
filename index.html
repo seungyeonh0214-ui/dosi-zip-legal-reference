@@ -4,118 +4,69 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>도시.zip 법령 기준판</title>
-<meta name="description" content="평택시 도시계획 조례의 개발 기준을 값·단위·출처·조회일과 함께 보여주는 팀 화면">
+<meta name="description" content="전국 159개 시·군 도시계획 조례의 건폐율·용적률을 값·단위·출처·조회일과 함께 보여주는 팀 화면">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f5f6f8; --surface:#ffffff; --line:#dfe3e8; --line-soft:#eceff3;
+  --bg:#f5f6f8; --surface:#fff; --line:#dfe3e8; --line-soft:#eceff3;
   --ink:#16191d; --ink-2:#4a525c; --ink-3:#79828d;
-  --accent:#1d4ed8; --accent-soft:#eef2ff;
-  --slot:#8b94a0;
-  --radius:14px;
+  --accent:#1d4ed8; --accent-soft:#eef2ff; --slot:#8b94a0; --radius:14px;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0f1216; --surface:#171b21; --line:#2a313a; --line-soft:#222831;
-    --ink:#e9edf2; --ink-2:#aab3bf; --ink-3:#7c8792;
-    --accent:#7aa2ff; --accent-soft:#1b2436;
-    --slot:#6d7883;
-  }
-}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1216; --surface:#171b21; --line:#2a313a; --line-soft:#222831;
+  --ink:#e9edf2; --ink-2:#aab3bf; --ink-3:#7c8792;
+  --accent:#7aa2ff; --accent-soft:#1b2436; --slot:#6d7883;}}
 :root[data-theme="dark"]{
   --bg:#0f1216; --surface:#171b21; --line:#2a313a; --line-soft:#222831;
   --ink:#e9edf2; --ink-2:#aab3bf; --ink-3:#7c8792;
-  --accent:#7aa2ff; --accent-soft:#1b2436;
-  --slot:#6d7883;
-}
+  --accent:#7aa2ff; --accent-soft:#1b2436; --slot:#6d7883;}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{
-  background:var(--bg); color:var(--ink);
-  font-family:"IBM Plex Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  line-height:1.65; -webkit-font-smoothing:antialiased;
-}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1120px;margin:0 auto;padding:40px 16px 72px}
-
-header{margin-bottom:28px}
-.eyebrow{
-  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-3);font-weight:600;margin:0 0 8px
-}
+header{margin-bottom:24px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
 h1{font-size:clamp(22px,4vw,30px);line-height:1.3;margin:0 0 10px;letter-spacing:-.02em}
-.sub{color:var(--ink-2);font-size:15px;margin:0;max-width:60ch}
-
-.bar{
-  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
-  margin:24px 0 8px;padding:14px 16px;
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-}
-.bar label{font-size:13px;color:var(--ink-2);font-weight:600}
-select{
-  font:inherit;font-size:14px;padding:8px 12px;border-radius:9px;
-  border:1px solid var(--line);background:var(--bg);color:var(--ink);
-  min-width:min(260px,100%);
-}
+.sub{color:var(--ink-2);font-size:15px;margin:0;max-width:62ch}
+.bar{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin:22px 0 0;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.fld{display:flex;flex-direction:column;gap:5px;flex:1 1 210px;min-width:0}
+.fld label{font-size:12px;color:var(--ink-3);font-weight:600;letter-spacing:.04em}
+select{font:inherit;font-size:14px;padding:9px 12px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
 select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-
 .grid{display:grid;gap:16px;grid-template-columns:repeat(3,1fr);margin-top:16px}
 @media (max-width:880px){.grid{grid-template-columns:1fr}}
-
-.card{
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-  padding:20px;display:flex;flex-direction:column;position:relative;
-}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column}
 .card.is-target{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-.slot{
-  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
-  letter-spacing:.1em;color:var(--slot);margin:0 0 4px
-}
+.slot{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--slot);margin:0 0 4px}
 .card.is-target .slot{color:var(--accent)}
 .card h2{font-size:15px;font-weight:700;margin:0 0 2px;letter-spacing:-.01em}
 .scope{font-size:13px;color:var(--ink-2);margin:0 0 16px;min-height:1.6em}
-
 .field{padding:11px 0;border-top:1px solid var(--line-soft)}
 .field:first-of-type{border-top:0;padding-top:0}
-.field-label{
-  display:block;font-size:11px;font-weight:600;letter-spacing:.08em;
-  color:var(--ink-3);text-transform:uppercase;margin-bottom:3px
-}
+.field-label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase;margin-bottom:3px}
 .field-value{font-size:14px;color:var(--ink);word-break:keep-all}
 .value-row{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
-.num{
-  font-family:"IBM Plex Mono",monospace;font-size:34px;font-weight:600;
-  line-height:1.1;letter-spacing:-.02em
-}
+.num{font-family:"IBM Plex Mono",monospace;font-size:34px;font-weight:600;line-height:1.1;letter-spacing:-.02em}
 .unit{font-size:15px;color:var(--ink-2);font-weight:500}
 .mono{font-family:"IBM Plex Mono",monospace;font-size:13px}
 .note{font-size:12px;color:var(--ink-3);margin-top:7px;line-height:1.5}
 a{color:var(--accent)}
-
-.tablewrap{
-  margin-top:32px;background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--radius);overflow:hidden
-}
+.tablewrap{margin-top:30px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
 .tablehead{padding:16px 18px;border-bottom:1px solid var(--line)}
 .tablehead h2{margin:0;font-size:15px;font-weight:700}
 .tablehead p{margin:4px 0 0;font-size:13px;color:var(--ink-2)}
-.scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:13px;min-width:560px}
+.scroll{overflow-x:auto;max-height:520px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:540px}
 th,td{padding:9px 14px;text-align:left;border-bottom:1px solid var(--line-soft);white-space:nowrap}
-th{
-  font-size:11px;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--ink-3);font-weight:600;background:var(--bg);position:sticky;top:0
-}
+th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600;background:var(--bg);position:sticky;top:0}
 td.n{text-align:right;font-family:"IBM Plex Mono",monospace}
 tbody tr.on{background:var(--accent-soft)}
 tbody tr:last-child td{border-bottom:0}
-
-footer{
-  margin-top:32px;padding-top:20px;border-top:1px solid var(--line);
-  font-size:12.5px;color:var(--ink-3);line-height:1.7
-}
+footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3);line-height:1.7}
 footer strong{color:var(--ink-2);font-weight:600}
+.loading{padding:26px;text-align:center;color:var(--ink-3);font-size:14px}
 </style>
 </head>
 <body>
@@ -123,29 +74,37 @@ footer strong{color:var(--ink-2);font-weight:600}
 
 <header>
   <p class="eyebrow">디지털설계스튜디오 Ⅳ · 도시.zip</p>
-  <h1>평택시 도시계획 조례 기준판</h1>
-  <p class="sub">개발 기준을 <strong>값 · 단위 · 출처(조문 번호 · 시행일) · 조회일</strong> 네 칸으로 나눠 표시합니다. 모든 수치는 조례 원문에서 직접 확인했습니다.</p>
+  <h1>전국 시·군 도시계획 조례 기준판</h1>
+  <p class="sub">건폐율·용적률은 국토계획법이 범위만 정하고 <strong>수치는 조례에 위임</strong>합니다. 그래서 시·군마다 다릅니다. 각 값을 <strong>값 · 단위 · 출처(조문 번호 · 시행일) · 조회일</strong> 네 칸으로 나눠 표시합니다.</p>
 </header>
 
 <div class="bar">
-  <label for="zone">용도지역</label>
-  <select id="zone" aria-label="용도지역 선택"></select>
+  <div class="fld">
+    <label for="sido">시·도</label>
+    <select id="sido" aria-label="시도 선택"></select>
+  </div>
+  <div class="fld">
+    <label for="sgg">시·군</label>
+    <select id="sgg" aria-label="시군 선택"></select>
+  </div>
+  <div class="fld">
+    <label for="zone">용도지역</label>
+    <select id="zone" aria-label="용도지역 선택"></select>
+  </div>
 </div>
 
 <div class="grid">
-
   <section class="card">
     <p class="slot">칸 01</p>
-    <h2>개발행위허가 경사도</h2>
-    <p class="scope">임야 · 시가화용도 지역 제외</p>
+    <h2>근거 조례</h2>
+    <p class="scope" id="c1-scope">—</p>
     <div class="field">
-      <span class="field-label">값 · 단위</span>
-      <div class="value-row"><span class="num">15</span><span class="unit">도 미만</span></div>
+      <span class="field-label">조례번호</span>
+      <div class="field-value mono" id="c1-no">—</div>
     </div>
     <div class="field">
-      <span class="field-label">출처</span>
-      <div class="field-value">평택시 도시계획 조례 <span class="mono">제20조제1항제2호</span></div>
-      <div class="note">시행 2026-05-18 · 경기도평택시조례 제2630호</div>
+      <span class="field-label">시행일</span>
+      <div class="field-value mono" id="c1-sih">—</div>
     </div>
     <div class="field">
       <span class="field-label">조회일</span>
@@ -156,15 +115,15 @@ footer strong{color:var(--ink-2);font-weight:600}
   <section class="card">
     <p class="slot">칸 02</p>
     <h2>건폐율</h2>
-    <p class="scope" id="bcr-scope">—</p>
+    <p class="scope" id="c2-scope">—</p>
     <div class="field">
       <span class="field-label">값 · 단위</span>
-      <div class="value-row"><span class="num" id="bcr-val">—</span><span class="unit" id="bcr-unit">—</span></div>
+      <div class="value-row"><span class="num" id="c2-val">—</span><span class="unit" id="c2-unit"></span></div>
     </div>
     <div class="field">
       <span class="field-label">출처</span>
-      <div class="field-value">평택시 도시계획 조례 <span class="mono" id="bcr-jo">—</span></div>
-      <div class="note">시행 2026-05-18 · 경기도평택시조례 제2630호</div>
+      <div class="field-value"><span id="c2-ord">—</span> <span class="mono" id="c2-jo"></span></div>
+      <div class="note" id="c2-sih">—</div>
     </div>
     <div class="field">
       <span class="field-label">조회일</span>
@@ -175,112 +134,175 @@ footer strong{color:var(--ink-2);font-weight:600}
   <section class="card is-target">
     <p class="slot">칸 03 · 과제 대상</p>
     <h2>용적률</h2>
-    <p class="scope" id="far-scope">—</p>
+    <p class="scope" id="c3-scope">—</p>
     <div class="field">
       <span class="field-label">값 · 단위</span>
-      <div class="value-row"><span class="num" id="far-val">—</span><span class="unit" id="far-unit">—</span></div>
+      <div class="value-row"><span class="num" id="c3-val">—</span><span class="unit" id="c3-unit"></span></div>
     </div>
     <div class="field">
       <span class="field-label">출처</span>
-      <div class="field-value">평택시 도시계획 조례 <span class="mono" id="far-jo">—</span></div>
-      <div class="note">시행 2026-05-18 · 경기도평택시조례 제2630호</div>
+      <div class="field-value"><span id="c3-ord">—</span> <span class="mono" id="c3-jo"></span></div>
+      <div class="note" id="c3-sih">—</div>
     </div>
     <div class="field">
       <span class="field-label">조회일</span>
       <div class="field-value mono">2026-09-21</div>
     </div>
-    <p class="note" id="far-note"></p>
+    <p class="note" id="c3-rank"></p>
   </section>
-
 </div>
 
 <div class="tablewrap">
   <div class="tablehead">
-    <h2>용도지역 21종 건폐율 · 용적률</h2>
-    <p>평택시 도시계획 조례 제56조제1항 · 제61조제1항 — <a href="data/pyeongtaek_far_bcr.csv">CSV 내려받기</a></p>
+    <h2 id="t-title">전국 비교</h2>
+    <p id="t-sub">선택한 용도지역의 시·군별 용적률입니다. — <a href="data/korea_far_bcr.csv">전국 CSV</a> · <a href="data/korea_index.csv">수집 현황</a> · <a href="data/pyeongtaek_far_bcr.csv">평택시 21종</a></p>
   </div>
-  <div class="scroll">
-    <table>
-      <thead>
-        <tr><th>구분</th><th>용도지역</th><th>건폐율</th><th>용적률</th><th>출처 조문</th></tr>
-      </thead>
+  <div class="scroll"><div class="loading" id="loading">데이터를 불러오는 중…</div>
+    <table id="tbl" hidden>
+      <thead><tr><th>시·도</th><th>시·군</th><th>건폐율</th><th>용적률</th><th>출처 조문</th><th>시행일</th></tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
 </div>
 
 <footer>
-  <strong>출처</strong> 국가법령정보센터(법제처) · 평택시 도시계획 조례 (경기도평택시조례 제2630호, 시행 2026-05-18)<br>
-  <strong>조회일</strong> 2026-09-21 — 조례는 개정 시 조문 번호가 밀릴 수 있어 시행일과 조회일을 함께 기록합니다.<br>
-  <strong>산정</strong> 건폐율 = 건축면적 ÷ 대지면적 · 용적률 = 연면적 ÷ 대지면적
+  <strong>출처</strong> 국가법령정보센터(법제처) 자치법규 — 전국 159개 시·군 도시계획(군계획) 조례<br>
+  <strong>조회일</strong> 2026-09-21 · 조례는 개정 시 조문 번호가 밀리므로 시행일과 조회일을 함께 기록합니다.<br>
+  <strong>산정</strong> 건폐율 = 건축면적 ÷ 대지면적 · 용적률 = 연면적 ÷ 대지면적<br>
+  <strong>주의</strong> 장흥군·무안군·청도군은 조례 명칭 확인 필요, 창원시·울산광역시는 별표 위임으로 미수집. 고성군은 강원·경남 동명이라 1건만 수록.
 </footer>
 
 </div>
 
 <script>
-const ZONES = [
-  ["도시지역-주거","제1종전용주거지역",50,100,"제56조제1항제1호","제61조제1항제1호",""],
-  ["도시지역-주거","제2종전용주거지역",50,150,"제56조제1항제2호","제61조제1항제2호",""],
-  ["도시지역-주거","제1종일반주거지역",60,200,"제56조제1항제3호","제61조제1항제3호","시장정비사업구역 400%"],
-  ["도시지역-주거","제2종일반주거지역",60,250,"제56조제1항제4호","제61조제1항제4호","시장정비사업구역 400%"],
-  ["도시지역-주거","제3종일반주거지역",50,300,"제56조제1항제5호","제61조제1항제5호","시장정비사업구역 400%"],
-  ["도시지역-주거","준주거지역",70,500,"제56조제1항제6호","제61조제1항제6호","공동주택 건축 시 제3종일반주거지역 용적률 적용"],
-  ["도시지역-상업","중심상업지역",90,1500,"제56조제1항제7호","제61조제1항제7호",""],
-  ["도시지역-상업","일반상업지역",80,1300,"제56조제1항제8호","제61조제1항제8호",""],
-  ["도시지역-상업","근린상업지역",70,900,"제56조제1항제9호","제61조제1항제9호",""],
-  ["도시지역-상업","유통상업지역",60,1100,"제56조제1항제10호","제61조제1항제10호",""],
-  ["도시지역-공업","전용공업지역",70,300,"제56조제1항제11호","제61조제1항제11호",""],
-  ["도시지역-공업","일반공업지역",70,350,"제56조제1항제12호","제61조제1항제12호",""],
-  ["도시지역-공업","준공업지역",70,400,"제56조제1항제13호","제61조제1항제13호",""],
-  ["도시지역-녹지","보전녹지지역",20,80,"제56조제1항제14호","제61조제1항제14호",""],
-  ["도시지역-녹지","생산녹지지역",20,100,"제56조제1항제15호","제61조제1항제15호","성장관리계획 수립 시 건폐율 30%"],
-  ["도시지역-녹지","자연녹지지역",20,100,"제56조제1항제16호","제61조제1항제16호","성장관리계획 수립 시 건폐율 30%"],
-  ["관리지역","보전관리지역",20,80,"제56조제1항제17호","제61조제1항제17호",""],
-  ["관리지역","생산관리지역",20,80,"제56조제1항제18호","제61조제1항제18호","성장관리계획 수립 시 건폐율 30%"],
-  ["관리지역","계획관리지역",40,100,"제56조제1항제19호","제61조제1항제19호","성장관리계획 수립 시 건폐율 50% · 용적률 125%"],
-  ["농림지역","농림지역",20,80,"제56조제1항제20호","제61조제1항제20호","성장관리계획 수립 시 건폐율 30%"],
-  ["자연환경보전지역","자연환경보전지역",20,80,"제56조제1항제21호","제61조제1항제21호",""]
-];
+const ZONE_ORDER = ["제1종전용주거지역","제2종전용주거지역","제1종일반주거지역","제2종일반주거지역","제3종일반주거지역","준주거지역","중심상업지역","일반상업지역","근린상업지역","유통상업지역","전용공업지역","일반공업지역","준공업지역","보전녹지지역","생산녹지지역","자연녹지지역","보전관리지역","생산관리지역","계획관리지역","농림지역","자연환경보전지역"];
+const SIDO_ORDER = ["광역","경기","강원","충북","충남","전북","전남","경북","경남"];
+const SIDO_LABEL = {광역:"특별시·광역시·특별자치",경기:"경기",강원:"강원",충북:"충북",충남:"충남",전북:"전북",전남:"전남",경북:"경북",경남:"경남"};
+let ROWS = [];
 
-const sel = document.getElementById('zone');
-const tbody = document.getElementById('tbody');
-
-ZONES.forEach((z, i) => {
-  const o = document.createElement('option');
-  o.value = i; o.textContent = z[1];
-  sel.appendChild(o);
-
-  const tr = document.createElement('tr');
-  tr.dataset.i = i;
-  tr.innerHTML =
-    '<td>' + z[0] + '</td><td>' + z[1] + '</td>' +
-    '<td class="n">' + z[2] + '%</td><td class="n">' + z[3] + '%</td>' +
-    '<td class="mono">' + z[5] + '</td>';
-  tbody.appendChild(tr);
-});
-
-function render(){
-  const z = ZONES[sel.value];
-  document.getElementById('bcr-scope').textContent = z[1];
-  document.getElementById('bcr-val').textContent = z[2];
-  document.getElementById('bcr-unit').textContent = '% 이하';
-  document.getElementById('bcr-jo').textContent = z[4];
-
-  document.getElementById('far-scope').textContent = z[1];
-  document.getElementById('far-val').textContent = z[3];
-  document.getElementById('far-unit').textContent = '% 이하';
-  document.getElementById('far-jo').textContent = z[5];
-  document.getElementById('far-note').textContent = z[6] ? '비고 — ' + z[6] : '';
-
-  [...tbody.rows].forEach(r => r.classList.toggle('on', r.dataset.i === sel.value));
-  try { localStorage.setItem('zone', sel.value); } catch(e) {}
+function parseCSV(text){
+  const out=[]; let row=[], cur='', q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=c; }
+    else if(c==='"') q=true;
+    else if(c===','){ row.push(cur); cur=''; }
+    else if(c==='\n'){ row.push(cur); out.push(row); row=[]; cur=''; }
+    else if(c!=='\r') cur+=c;
+  }
+  if(cur||row.length){ row.push(cur); out.push(row); }
+  return out;
 }
 
-let saved = null;
-try { saved = localStorage.getItem('zone'); } catch(e) {}
-sel.value = (saved !== null && ZONES[saved]) ? saved : 3;
-sel.addEventListener('change', render);
-render();
+const $ = id => document.getElementById(id);
+const sidoSel=$('sido'), sggSel=$('sgg'), zoneSel=$('zone');
+
+function fillSido(){
+  const have=[...new Set(ROWS.map(r=>r.시도))];
+  SIDO_ORDER.filter(s=>have.includes(s)).forEach(s=>{
+    const o=document.createElement('option'); o.value=s; o.textContent=SIDO_LABEL[s]||s; sidoSel.appendChild(o);
+  });
+}
+function fillSgg(){
+  sggSel.innerHTML='';
+  const names=[...new Set(ROWS.filter(r=>r.시도===sidoSel.value).map(r=>r.시군))].sort((a,b)=>a.localeCompare(b,'ko'));
+  names.forEach(n=>{ const o=document.createElement('option'); o.value=n; o.textContent=n; sggSel.appendChild(o); });
+}
+function fillZone(){
+  const keep=zoneSel.value;
+  zoneSel.innerHTML='';
+  const have=ROWS.filter(r=>r.시군===sggSel.value).map(r=>r.용도지역);
+  ZONE_ORDER.filter(z=>have.includes(z)).forEach(z=>{ const o=document.createElement('option'); o.value=z; o.textContent=z; zoneSel.appendChild(o); });
+  if(keep && [...zoneSel.options].some(o=>o.value===keep)) zoneSel.value=keep;
+}
+
+function render(){
+  const r = ROWS.find(x=>x.시군===sggSel.value && x.용도지역===zoneSel.value);
+  if(!r) return;
+  const ordName = r.시군.endsWith('군') ? r.시군+' 군계획 조례' : r.시군+' 도시계획 조례';
+
+  $('c1-scope').textContent = ordName;
+  $('c1-no').textContent = '제'+r.조례번호+'호';
+  $('c1-sih').textContent = r.시행일;
+
+  $('c2-scope').textContent = r.용도지역;
+  $('c2-val').textContent = r.건폐율_값 || '별표';
+  $('c2-unit').textContent = r.건폐율_단위 || '';
+  $('c2-ord').textContent = ordName;
+  $('c2-jo').textContent = r.건폐율_출처조문;
+  $('c2-sih').textContent = '시행 '+r.시행일+' · 제'+r.조례번호+'호';
+
+  $('c3-scope').textContent = r.용도지역;
+  $('c3-val').textContent = r.용적률_값 || '별표';
+  $('c3-unit').textContent = r.용적률_단위 || '';
+  $('c3-ord').textContent = ordName;
+  $('c3-jo').textContent = r.용적률_출처조문;
+  $('c3-sih').textContent = '시행 '+r.시행일+' · 제'+r.조례번호+'호';
+
+  const peers = ROWS.filter(x=>x.용도지역===r.용도지역 && x.용적률_값).map(x=>+x.용적률_값);
+  if(r.용적률_값 && peers.length>1){
+    const v=+r.용적률_값, hi=Math.max(...peers), lo=Math.min(...peers);
+    const rank = peers.filter(p=>p>v).length + 1;
+    $('c3-rank').textContent = `전국 ${peers.length}개 시·군 중 ${rank}위 — 최고 ${hi}% · 최저 ${lo}%`;
+  } else $('c3-rank').textContent='';
+
+  buildTable(r);
+}
+
+function buildTable(cur){
+  const z = zoneSel.value;
+  $('t-title').textContent = z + ' 전국 비교';
+  const list = ROWS.filter(x=>x.용도지역===z)
+    .sort((a,b)=>(+b.용적률_값||0)-(+a.용적률_값||0));
+  const tb=$('tbody'); tb.innerHTML='';
+  const frag=document.createDocumentFragment();
+  list.forEach(x=>{
+    const tr=document.createElement('tr');
+    if(x.시군===cur.시군) tr.className='on';
+    tr.innerHTML='<td>'+(SIDO_LABEL[x.시도]||x.시도)+'</td><td>'+x.시군+'</td>'+
+      '<td class="n">'+(x.건폐율_값?x.건폐율_값+'%':'—')+'</td>'+
+      '<td class="n">'+(x.용적률_값?x.용적률_값+'%':'—')+'</td>'+
+      '<td class="mono">'+x.용적률_출처조문+'</td><td class="mono">'+x.시행일+'</td>';
+    frag.appendChild(tr);
+  });
+  tb.appendChild(frag);
+  $('loading').hidden=true; $('tbl').hidden=false;
+  const on=tb.querySelector('tr.on'); if(on) on.scrollIntoView({block:'nearest'});
+}
+
+function restore(){
+  try{
+    const s=localStorage.getItem('pick');
+    if(!s) return null;
+    return JSON.parse(s);
+  }catch(e){ return null; }
+}
+function save(){
+  try{ localStorage.setItem('pick', JSON.stringify({sido:sidoSel.value,sgg:sggSel.value,zone:zoneSel.value})); }catch(e){}
+}
+
+fetch('data/korea_far_bcr.csv')
+  .then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); })
+  .then(text=>{
+    const t = text.charCodeAt(0)===0xFEFF ? text.slice(1) : text;
+    const rows = parseCSV(t).filter(r=>r.length>5);
+    const head = rows.shift();
+    ROWS = rows.map(r=>{ const o={}; head.forEach((h,i)=>o[h]=r[i]); return o; });
+
+    fillSido();
+    const p = restore();
+    sidoSel.value = (p && [...sidoSel.options].some(o=>o.value===p.sido)) ? p.sido : '경기';
+    fillSgg();
+    sggSel.value = (p && [...sggSel.options].some(o=>o.value===p.sgg)) ? p.sgg : '평택시';
+    fillZone();
+    zoneSel.value = (p && [...zoneSel.options].some(o=>o.value===p.zone)) ? p.zone : '제2종일반주거지역';
+
+    sidoSel.addEventListener('change',()=>{ fillSgg(); fillZone(); render(); save(); });
+    sggSel.addEventListener('change',()=>{ fillZone(); render(); save(); });
+    zoneSel.addEventListener('change',()=>{ render(); save(); });
+    render();
+  })
+  .catch(e=>{ $('loading').textContent='데이터를 불러오지 못했습니다 ('+e.message+').'; });
 </script>
 </body>
 </html>
