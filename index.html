@@ -67,6 +67,54 @@ tbody tr:last-child td{border-bottom:0}
 footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3);line-height:1.7}
 footer strong{color:var(--ink-2);font-weight:600}
 .loading{padding:26px;text-align:center;color:var(--ink-3);font-size:14px}
+.btn{font:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.print-only{display:none}
+
+@media print{
+  @page{size:A4 portrait;margin:11mm 10mm}
+  :root{--bg:#fff;--surface:#fff;--line:#c9ced6;--line-soft:#e3e7ec;--ink:#000;--ink-2:#333;--ink-3:#555;--accent:#1d4ed8;--accent-soft:#eef2ff;--slot:#666}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff;font-size:10pt;line-height:1.45}
+  .wrap{max-width:none;padding:0}
+  .screen-only{display:none !important}
+  .print-only{display:block}
+
+  header{margin-bottom:8px}
+  .eyebrow{font-size:8pt;margin-bottom:3px}
+  h1{font-size:15pt;margin:0 0 4px}
+  .sub{font-size:8.5pt;max-width:none;margin:0}
+
+  #print-pick{margin:8px 0 0;padding:7px 10px;border:1px solid var(--line);border-radius:6px;
+    font-size:9.5pt;font-weight:600;background:#f6f7f9}
+
+  .grid{gap:8px;margin-top:8px;grid-template-columns:repeat(3,1fr);break-inside:avoid}
+  .card{padding:10px;border-radius:7px;break-inside:avoid}
+  .card.is-target{box-shadow:none;border-width:1.6px}
+  .slot{font-size:7.5pt;margin-bottom:2px}
+  .card h2{font-size:10pt}
+  .scope{font-size:8.5pt;margin:0 0 7px;min-height:0}
+  .field{padding:5px 0}
+  .field-label{font-size:7pt;margin-bottom:1px}
+  .field-value{font-size:8.5pt}
+  .num{font-size:20pt}
+  .unit{font-size:9pt}
+  .mono{font-size:8.5pt}
+  .note{font-size:7.5pt;margin-top:3px}
+
+  .tablewrap{margin-top:10px;border-radius:7px;break-inside:avoid}
+  .tablehead{padding:8px 10px}
+  .tablehead h2{font-size:9.5pt}
+  .tablehead p{font-size:8pt}
+  .scroll{max-height:none;overflow:visible}
+  table{min-width:0;font-size:8.5pt}
+  th,td{padding:4px 9px}
+  th{position:static}
+
+  footer{margin-top:10px;padding-top:8px;font-size:7.5pt;line-height:1.5}
+  tbody tr.p-hide{display:none}
+  tbody tr.on{background:var(--accent-soft) !important;font-weight:600}
+}
 </style>
 </head>
 <body>
@@ -78,7 +126,7 @@ footer strong{color:var(--ink-2);font-weight:600}
   <p class="sub">건폐율·용적률은 국토계획법이 범위만 정하고 <strong>수치는 조례에 위임</strong>합니다. 그래서 시·군마다 다릅니다. 각 값을 <strong>값 · 단위 · 출처(조문 번호 · 시행일) · 조회일</strong> 네 칸으로 나눠 표시합니다.</p>
 </header>
 
-<div class="bar">
+<div class="bar screen-only">
   <div class="fld">
     <label for="sido">시·도</label>
     <select id="sido" aria-label="시도 선택"></select>
@@ -91,7 +139,10 @@ footer strong{color:var(--ink-2);font-weight:600}
     <label for="zone">용도지역</label>
     <select id="zone" aria-label="용도지역 선택"></select>
   </div>
+  <button type="button" class="btn" id="printBtn">인쇄 · PDF 저장</button>
 </div>
+
+<p class="print-only" id="print-pick">—</p>
 
 <div class="grid">
   <section class="card">
@@ -246,6 +297,9 @@ function render(){
     $('c3-rank').textContent = `전국 ${peers.length}개 시·군 중 ${rank}위 — 최고 ${hi}% · 최저 ${lo}%`;
   } else $('c3-rank').textContent='';
 
+  const sidoTxt = SIDO_LABEL[r.시도]||r.시도;
+  $('print-pick').textContent = `${sidoTxt} · ${r.시군} · ${r.용도지역}  —  조회일 2026-09-21`;
+
   buildTable(r);
 }
 
@@ -267,6 +321,15 @@ function buildTable(cur){
   });
   tb.appendChild(frag);
   $('loading').hidden=true; $('tbl').hidden=false;
+
+  // 인쇄 시 A4 1쪽에 맞추기 — 상위 4 · 선택 시군 앞뒤 1 · 하위 3만 남김
+  const trs=[...tb.rows];
+  const sel=trs.findIndex(t=>t.classList.contains('on'));
+  const keep=new Set([0,1,2,3, trs.length-3, trs.length-2, trs.length-1]);
+  if(sel>-1){ keep.add(sel-1); keep.add(sel); keep.add(sel+1); }
+  trs.forEach((t,i)=>t.classList.toggle('p-hide', !keep.has(i)));
+  $('t-sub').dataset.total = trs.length;
+
   const on=tb.querySelector('tr.on'); if(on) on.scrollIntoView({block:'nearest'});
 }
 
@@ -296,6 +359,15 @@ fetch('data/korea_far_bcr.csv')
     sggSel.value = (p && [...sggSel.options].some(o=>o.value===p.sgg)) ? p.sgg : '평택시';
     fillZone();
     zoneSel.value = (p && [...zoneSel.options].some(o=>o.value===p.zone)) ? p.zone : '제2종일반주거지역';
+
+    $('printBtn').addEventListener('click',()=>window.print());
+    window.addEventListener('beforeprint',()=>{
+      const n=$('t-sub').dataset.total||'';
+      $('t-sub').textContent = n ? `전국 ${n}개 시·군 중 상위·하위 및 선택 시·군만 발췌 — 전체는 data/korea_far_bcr.csv` : '';
+    });
+    window.addEventListener('afterprint',()=>{
+      $('t-sub').innerHTML='선택한 용도지역의 시·군별 용적률입니다. — <a href="data/korea_far_bcr.csv">전국 CSV</a> · <a href="data/korea_index.csv">수집 현황</a> · <a href="data/pyeongtaek_far_bcr.csv">평택시 21종</a>';
+    });
 
     sidoSel.addEventListener('change',()=>{ fillSgg(); fillZone(); render(); save(); });
     sggSel.addEventListener('change',()=>{ fillZone(); render(); save(); });
