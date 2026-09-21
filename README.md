@@ -25,6 +25,9 @@
 
 **인쇄 · PDF 저장** 버튼을 누르면 A4 1쪽으로 맞춰집니다. 선택 상자는 숨겨지고 선택 내용이 한 줄로 표시되며, 비교표는 상위·하위와 선택 시·군 주변만 발췌됩니다.
 
+인쇄 결과를 화면에서 미리 보려면 주소 끝에 `?print=1`을 붙이세요.
+→ https://seungyeonh0214-ui.github.io/dosi-zip-legal-reference/?print=1
+
 데이터
 - [data/korea_far_bcr.csv](data/korea_far_bcr.csv) — 전국 3,184행
 - [data/korea_index.csv](data/korea_index.csv) — 시·군별 수집 현황

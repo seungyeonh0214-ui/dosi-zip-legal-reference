@@ -1,0 +1,51 @@
+/* A4 1쪽 인쇄 레이아웃
+   index.html에서 media="print"로 불러오며, ?print=1 로 접속하면 화면에서도 미리봅니다. */
+
+@page{size:A4 portrait;margin:11mm 10mm}
+
+:root{
+  --bg:#fff; --surface:#fff; --line:#c9ced6; --line-soft:#e3e7ec;
+  --ink:#000; --ink-2:#333; --ink-3:#555;
+  --accent:#1d4ed8; --accent-soft:#eef2ff; --slot:#666;
+}
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{background:#fff;font-size:10pt;line-height:1.45}
+.wrap{max-width:none;padding:0}
+.screen-only{display:none !important}
+.print-only{display:block}
+
+header{margin-bottom:8px}
+.eyebrow{font-size:8pt;margin-bottom:3px}
+h1{font-size:15pt;margin:0 0 4px}
+.sub{font-size:8.5pt;max-width:none;margin:0}
+
+#print-pick{margin:8px 0 0;padding:7px 10px;border:1px solid var(--line);border-radius:6px;
+  font-size:9.5pt;font-weight:600;background:#f6f7f9}
+
+.grid{gap:8px;margin-top:8px;grid-template-columns:repeat(3,1fr);break-inside:avoid}
+.card{padding:10px;border-radius:7px;break-inside:avoid}
+.card.is-target{box-shadow:none;border-width:1.6px}
+.slot{font-size:7.5pt;margin-bottom:2px}
+.card h2{font-size:10pt}
+.scope{font-size:8.5pt;margin:0 0 7px;min-height:0}
+.field{padding:5px 0}
+.field-label{font-size:7pt;margin-bottom:1px}
+.field-value{font-size:8.5pt}
+.num{font-size:20pt}
+.unit{font-size:9pt}
+.mono{font-size:8.5pt}
+.note{font-size:7.5pt;margin-top:3px}
+
+.tablewrap{margin-top:10px;border-radius:7px;break-inside:avoid}
+.tablehead{padding:8px 10px}
+.tablehead h2{font-size:9.5pt}
+.tablehead p{font-size:8pt}
+.scroll{max-height:none;overflow:visible}
+table{min-width:0;font-size:8.5pt}
+th,td{padding:4px 9px}
+th{position:static}
+
+tbody tr.p-hide{display:none}
+tbody tr.on{background:var(--accent-soft) !important;font-weight:600}
+
+footer{margin-top:10px;padding-top:8px;font-size:7.5pt;line-height:1.5}
