@@ -1,0 +1,16 @@
+# 과제계획서 원본 — 팀원 실명·담당교수명 포함, 저장소에 올리지 않음
+*.hwp
+*.hwpx
+*.docx
+*.pptx
+*.pdf
+*.zip
+
+# MCP 설정 — 법제처 Open API ID 포함
+.mcp.json
+.claude/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
