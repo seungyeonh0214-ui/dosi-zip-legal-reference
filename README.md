@@ -13,7 +13,7 @@
 
 **배포 주소**: https://seungyeonh0214-ui.github.io/dosi-zip-legal-reference/
 
-**전국 159개 시·군** 도시계획(군계획) 조례의 건폐율·용적률을 **값 · 단위 · 출처(조문 번호 · 시행일) · 조회일** 네 칸으로 나눠 표시합니다.
+**전국 157개 시·군** 도시계획(군계획) 조례의 건폐율·용적률을 **값 · 단위 · 출처(조문 번호 · 시행일) · 조회일** 네 칸으로 나눠 표시합니다.
 
 | 칸 | 내용 |
 |---|---|
@@ -24,7 +24,7 @@
 시·도 → 시·군 → 용도지역을 고르면 세 칸이 함께 갱신되고, 아래 표에서 해당 용도지역의 전국 비교를 볼 수 있습니다.
 
 데이터
-- [data/korea_far_bcr.csv](data/korea_far_bcr.csv) — 전국 3,121행
+- [data/korea_far_bcr.csv](data/korea_far_bcr.csv) — 전국 3,184행
 - [data/korea_index.csv](data/korea_index.csv) — 시·군별 수집 현황
 - [data/pyeongtaek_far_bcr.csv](data/pyeongtaek_far_bcr.csv) — 평택시 21종
 점검: [점검로그.md](점검로그.md) — 커밋 내 인증키 혼입 여부 확인 기록
