@@ -268,8 +268,13 @@ function fillZone(){
 }
 
 function render(){
-  const r = ROWS.find(x=>x.시군===sggSel.value && x.용도지역===zoneSel.value);
-  if(!r) return;
+  let r = ROWS.find(x=>x.시군===sggSel.value && x.용도지역===zoneSel.value);
+  if(!r){ // 선택이 어긋나면 현재 시·군의 첫 용도지역으로 복구
+    r = ROWS.find(x=>x.시군===sggSel.value) || ROWS[0];
+    if(!r) return;
+    if(sggSel.value!==r.시군) sggSel.value=r.시군;
+    if(zoneSel.value!==r.용도지역 && [...zoneSel.options].some(o=>o.value===r.용도지역)) zoneSel.value=r.용도지역;
+  }
   const ordName = r.시군.endsWith('군') ? r.시군+' 군계획 조례' : r.시군+' 도시계획 조례';
 
   $('c1-scope').textContent = ordName;
@@ -352,13 +357,18 @@ fetch('data/korea_far_bcr.csv')
     const head = rows.shift();
     ROWS = rows.map(r=>{ const o={}; head.forEach((h,i)=>o[h]=r[i]); return o; });
 
+    const has=(sel,v)=>v && [...sel.options].some(o=>o.value===v);
+    const pick=(sel,wanted,fallback)=>{
+      sel.value = has(sel,wanted) ? wanted : (has(sel,fallback) ? fallback : (sel.options[0]||{}).value||'');
+    };
+
     fillSido();
     const p = restore();
-    sidoSel.value = (p && [...sidoSel.options].some(o=>o.value===p.sido)) ? p.sido : '경기';
+    pick(sidoSel, p&&p.sido, '경기');
     fillSgg();
-    sggSel.value = (p && [...sggSel.options].some(o=>o.value===p.sgg)) ? p.sgg : '평택시';
+    pick(sggSel, p&&p.sgg, '평택시');
     fillZone();
-    zoneSel.value = (p && [...zoneSel.options].some(o=>o.value===p.zone)) ? p.zone : '제2종일반주거지역';
+    pick(zoneSel, p&&p.zone, '제2종일반주거지역');
 
     $('printBtn').addEventListener('click',()=>window.print());
     window.addEventListener('beforeprint',()=>{
